@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GWR Edit Pipeline — Fri 19 June 2026</title>
+<style>
+:root{
+  --ch:#1E1F27;--ow:#F6F6F6;--pg:#C5FFC5;--pk:#FFC5D7;--py:#FCEEAC;
+  --er:#FF4F17;--sky:#C2E9FF;--slate:#314147;
+  --dp:"Signifier Light",Georgia,serif;--ss:"National 2","Helvetica Neue",Arial,sans-serif;
+  --g:36px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ch);color:var(--ow);font-family:var(--ss);font-size:14px;line-height:1.5;min-height:100vh}
+
+/* HEADER */
+.hdr{padding:var(--g) var(--g) 20px;border-bottom:1px solid rgba(246,246,246,.07)}
+.eye{font-weight:800;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--pg);margin-bottom:10px}
+.h1{font-family:var(--dp);font-weight:300;font-size:clamp(30px,4.5vw,56px);line-height:1;letter-spacing:-.01em;margin-bottom:10px}
+.h1 .punch{font-family:var(--ss);font-weight:800;color:var(--pg)}
+.meta{display:flex;gap:16px;flex-wrap:wrap;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(246,246,246,.28)}
+.meta a{color:rgba(246,246,246,.22);text-decoration:none;font-weight:800;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.meta a:hover{color:var(--pg)}
+
+/* TICKER */
+.tw{overflow:hidden;border-bottom:1px solid rgba(246,246,246,.06);border-top:1px solid rgba(246,246,246,.06);background:rgba(0,0,0,.3);height:35px;display:flex;align-items:center;position:relative}
+.tl-lbl{flex-shrink:0;font-weight:800;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ch);background:var(--pg);padding:0 13px;height:100%;display:flex;align-items:center;white-space:nowrap;z-index:2}
+.tw::after{content:"";position:absolute;right:0;top:0;width:60px;height:100%;background:linear-gradient(to right,transparent,rgba(14,14,18,.9));z-index:1;pointer-events:none}
+.tt{display:flex;white-space:nowrap;animation:ticker 42s linear infinite;will-change:transform}
+.tt:hover{animation-play-state:paused}
+.ti-wrap{display:flex;gap:0}
+.ti{display:inline-flex;align-items:center;gap:7px;padding:0 22px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;border-right:1px solid rgba(246,246,246,.06);height:35px}
+.ti .tn{color:rgba(246,246,246,.28)}.ti .tv{color:var(--ow)}.ti .ta{font-size:12px;font-weight:800}
+.tg .tv,.tg .ta{color:var(--pg)}.tr .tv,.tr .ta{color:var(--er)}.ty .tv,.ty .ta{color:var(--py)}.tp .tv,.tp .ta{color:var(--pk)}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+.body{padding:var(--g)}
+
+/* WEEK SCORECARD */
+.scorecard{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(246,246,246,.07);margin-bottom:var(--g)}
+.sc-panel{background:var(--ch);padding:20px 18px}
+.sc-eye{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px}
+.sc-row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid rgba(246,246,246,.05);font-size:12px}
+.sc-row:last-child{border-bottom:none}
+.sc-key{color:rgba(246,246,246,.5)}
+.sc-mon{font-weight:700;font-size:13px}
+.sc-fri{font-weight:700;font-size:13px}
+.sc-arrow{font-size:12px;margin:0 6px;color:rgba(246,246,246,.2)}
+.sc-green .sc-fri,.sc-green .sc-arrow{color:var(--pg)}
+.sc-red .sc-fri,.sc-red .sc-arrow{color:var(--er)}
+.sc-yellow .sc-fri,.sc-yellow .sc-arrow{color:var(--py)}
+.sc-head{display:flex;justify-content:space-between;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:rgba(246,246,246,.25);margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid rgba(246,246,246,.06)}
+
+/* CLEARED THIS WEEK */
+.cleared-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(246,246,246,.07);margin-bottom:var(--g)}
+.cg-item{background:var(--ch);padding:13px 15px;display:flex;gap:10px;align-items:flex-start}
+.cg-check{color:var(--pg);font-size:16px;font-weight:800;flex-shrink:0;line-height:1.2}
+.cg-name{font-weight:500;font-size:12px;color:var(--ow)}
+.cg-who{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:rgba(246,246,246,.3);margin-top:2px}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:rgba(246,246,246,.07);margin-bottom:var(--g)}
+.stat{background:var(--ch);padding:14px 13px}
+.sl{font-weight:800;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(246,246,246,.3);margin-bottom:5px}
+.sv{font-family:var(--ss);font-weight:800;font-size:28px;line-height:.9;letter-spacing:-.04em}
+.ss{font-size:10px;color:rgba(246,246,246,.28);margin-top:4px}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid rgba(246,246,246,.08);margin-bottom:var(--g);overflow-x:auto}
+.tbtn{background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;padding:8px 15px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:rgba(246,246,246,.3);cursor:pointer;font-family:var(--ss);white-space:nowrap}
+.tbtn:hover{color:rgba(246,246,246,.6)}
+.tbtn.active{color:var(--pg);border-bottom-color:var(--pg)}
+.bdg{margin-left:4px;font-size:9px;font-weight:800;padding:1px 5px;color:var(--ch);display:inline-block}
+.br{background:var(--er);color:#fff}.by{background:var(--py)}.bg{background:var(--pg)}.bp{background:var(--pk)}
+.panel{display:none}.panel.active{display:block}
+
+/* ACTIONS */
+.acts{display:flex;flex-direction:column;gap:2px;margin-bottom:var(--g)}
+.act{display:flex;gap:18px;padding:14px 17px;background:rgba(246,246,246,.04)}
+.act:hover{background:rgba(246,246,246,.07)}
+.an{font-family:var(--ss);font-weight:800;font-size:22px;line-height:1;letter-spacing:-.04em;flex-shrink:0;width:28px;color:rgba(246,246,246,.1)}
+.ar .an{color:var(--er)}.ay .an{color:var(--py)}.ag .an{color:var(--pg)}
+.at{font-weight:800;font-size:13px;color:var(--ow);margin-bottom:3px}
+.ab{font-size:12px;color:rgba(246,246,246,.42);line-height:1.55}
+.al{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--pg);text-decoration:none;margin-left:7px}
+.al:hover{text-decoration:underline}
+
+/* TABLE */
+.frow{display:flex;gap:8px;margin-bottom:11px;flex-wrap:wrap;align-items:center}
+.flb{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(246,246,246,.28)}
+.flt{font-size:12px;padding:5px 9px;background:rgba(246,246,246,.05);border:1px solid rgba(246,246,246,.09);color:var(--ow);font-family:var(--ss);cursor:pointer}
+.flt option{background:var(--ch)}
+.tbl{width:100%;border-collapse:collapse}
+.tbl thead th{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(246,246,246,.28);padding:7px 11px;text-align:left;border-bottom:1px solid rgba(246,246,246,.07);background:rgba(246,246,246,.04)}
+.tbl tbody tr td{padding:8px 11px;border-bottom:1px solid rgba(246,246,246,.04);font-size:12px;color:rgba(246,246,246,.62);vertical-align:middle}
+.tbl tbody tr:hover td{background:rgba(246,246,246,.03)}
+.tbl tbody tr td:first-child{color:var(--ow)}
+.rn td{background:rgba(197,255,197,.03)!important}
+.rh td{background:rgba(255,79,23,.022)!important}
+.rw td{background:rgba(197,255,197,.035)!important}
+.tl{color:var(--ow);text-decoration:none;font-weight:500}
+.tl:hover{color:var(--pg)}
+.nb{font-size:9px;font-weight:800;text-transform:uppercase;color:var(--ch);background:var(--pg);padding:1px 5px;margin-right:4px}
+.cb{font-size:9px;font-weight:800;text-transform:uppercase;color:var(--ch);background:var(--py);padding:1px 5px;margin-right:4px}
+.wn{font-size:9px;font-weight:800;text-transform:uppercase;color:var(--ch);background:var(--pg);padding:1px 5px;margin-right:4px}
+.dtag{font-size:10px;font-weight:800;margin-left:6px;text-transform:uppercase;letter-spacing:.04em}
+.do{color:var(--er)}.dw{color:var(--py)}.dk{color:rgba(246,246,246,.25)}
+.pill{font-size:10px;font-weight:800;padding:2px 7px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;display:inline-block;color:var(--ch)}
+.p-fs{background:var(--pk)}.p-ed{background:var(--py)}.p-gr{background:var(--pg)}.p-sig{background:var(--sky)}.p-fin{background:var(--pg)}.p-hld{background:rgba(246,246,246,.12);color:rgba(246,246,246,.42)}.p-src{background:rgba(246,246,246,.06);color:rgba(246,246,246,.35)}
+
+/* EDITOR GRID */
+.eg{display:grid;grid-template-columns:1.5fr repeat(5,.75fr);gap:1px;background:rgba(246,246,246,.07)}
+.ec{background:var(--ch);padding:10px 12px}
+.eh .ec{background:rgba(246,246,246,.04);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(246,246,246,.26)}
+.en{font-weight:800;font-size:13px}
+.ev{font-family:var(--ss);font-weight:800;font-size:20px;line-height:1;letter-spacing:-.04em}
+.ed{color:rgba(246,246,246,.14);font-size:16px;font-weight:800}
+.et{font-family:var(--ss);font-weight:800;font-size:13px;color:rgba(246,246,246,.38)}
+
+/* FLAGS */
+.fl{display:flex;flex-direction:column;gap:2px}
+.fli{display:flex;gap:12px;padding:13px 17px;background:rgba(246,246,246,.04)}
+.fli:hover{background:rgba(246,246,246,.07)}
+.fdot{width:8px;height:8px;flex-shrink:0;margin-top:4px;transform:rotate(45deg)}
+.fd-r{background:var(--er)}.fd-y{background:var(--py)}.fd-g{background:var(--pg)}
+.ft{font-weight:800;font-size:13px;margin-bottom:3px;color:var(--ow)}
+.fb{font-size:12px;color:rgba(246,246,246,.4);line-height:1.6}
+
+.ban{padding:12px 17px;font-weight:800;font-size:13px}
+.ban-g{background:var(--pg);color:var(--ch)}.ban-r{background:var(--er);color:#fff}
+
+.footer{margin-top:36px;padding:14px var(--g) 0;border-top:1px solid rgba(246,246,246,.06);font-weight:800;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(246,246,246,.14)}
+.subnote{font-size:11px;color:rgba(246,246,246,.22);margin-top:9px}
+.sec-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(246,246,246,.3);margin-bottom:9px}
+
+@media(max-width:760px){
+  .scorecard,.cleared-grid,.stats{grid-template-columns:1fr}
+  .eg{grid-template-columns:1fr repeat(3,.7fr)}
+  :root{--g:18px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="eye">GWR Edit Pipeline · Live · Friday 19 June 2026 — End of Week</div>
+  <h1 class="h1">Good week. <span class="punch">Here's where you land.</span></h1>
+  <div class="meta">
+    <span>Greg Hollands · Senior Account Manager</span>
+    <span>·</span>
+    <a href="https://bravebisonplc.monday.com/boards/2090332801" target="_blank">Open Monday ↗</a>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="tw">
+  <div class="tl-lbl">This week</div>
+  <div class="tt">
+    <div class="ti-wrap" id="ti1"></div>
+    <div class="ti-wrap" id="ti2"></div>
+  </div>
+</div>
+
+<div class="body">
+
+  <!-- WEEK SCORECARD -->
+  <p class="sec-lbl">Week scorecard — Mon 15 Jun vs Fri 19 Jun</p>
+  <div class="scorecard">
+
+    <div class="sc-panel">
+      <div class="sc-eye" style="color:var(--pg)">✓ What moved forward</div>
+      <div class="sc-head"><span>Metric</span><div style="display:flex;gap:16px"><span>Mon</span><span>Fri</span></div></div>
+      <div class="sc-row sc-green">
+        <span class="sc-key">Sign-off queue</span>
+        <div style="display:flex;align-items:baseline;gap:6px"><span class="sc-mon" style="color:rgba(246,246,246,.35)">9</span><span class="sc-arrow">→</span><span class="sc-fri">2</span></div>
+      </div>
+      <div class="sc-row sc-green">
+        <span class="sc-key">Lo Show subitems</span>
+        <div style="display:flex;align-items:baseline;gap:6px"><span class="sc-mon" style="color:rgba(246,246,246,.35)">7 Sign Off</span><span class="sc-arrow">→</span><span class="sc-fri">All done ✓</span></div>
+      </div>
+      <div class="sc-row sc-green">
+        <span class="sc-key">Cleared this week</span>
+        <div style="display:flex;align-items:baseline;gap:6px"><span class="sc-mon" style="color:rgba(246,246,246,.35)">0</span><span class="sc-arrow">→</span><span class="sc-fri">+12</span></div>
+      </div>
+      <div class="sc-row sc-green">
+        <span class="sc-key">New tasks added</span>
+        <div style="display:flex;align-items:baseline;gap:6px"><span class="sc-mon" style="color:rgba(246,246,246,.35)">—</span><span class="sc-arrow">→</span><span class="sc-fri">+9</span></div>
+      </div>
+      <div class="sc-row sc-green">
+        <span class="sc-key">WTR: Big John</span>
+        <div style="display:flex;align-items:baseline;gap:6px"><span class="sc-mon" style="color:rgba(246,246,246,.35)">Sign Off</span><span class="sc-arrow">→</span><span class="sc-fri">Done ✓</span></div>
+      </div>
+    </div>
+
+    <div class="sc-panel">
+      <div class="sc-eye" style="color:var(--er)">⚑ What didn't move</div>
+      <div class="sc-head"><span>Item</span><span>Status</span></div>
+      <div class="sc-row sc-red">
+        <span class="sc-key">Football Records Snap</span>
+        <div><span class="sc-fri">51 days</span></div>
+      </div>
+      <div class="sc-row sc-red">
+        <span class="sc-key">Fails Comp YT Shorts ×2</span>
+        <div><span class="sc-fri">Greg Reviewing still</span></div>
+      </div>
+      <div class="sc-row sc-red">
+        <span class="sc-key">Loudest WRs (×4 formats)</span>
+        <div><span class="sc-fri">Sign Off — yours</span></div>
+      </div>
+      <div class="sc-row sc-yellow">
+        <span class="sc-key">Sultan Meet the Record Holder</span>
+        <div><span class="sc-fri" style="color:var(--py)">Still Editing</span></div>
+      </div>
+      <div class="sc-row sc-yellow">
+        <span class="sc-key">Animal Comp</span>
+        <div><span class="sc-fri" style="color:var(--py)">Finally started</span></div>
+      </div>
+    </div>
+
+    <div class="sc-panel">
+      <div class="sc-eye" style="color:var(--py)">→ Going into next week</div>
+      <div class="sc-head"><span>Item</span><span>Priority</span></div>
+      <div class="sc-row">
+        <span class="sc-key">Loudest WRs sign-off</span>
+        <span class="sc-fri" style="color:var(--er);font-weight:800">Mon — urgent</span>
+      </div>
+      <div class="sc-row">
+        <span class="sc-key">WTR: Holly Murray</span>
+        <span class="sc-fri" style="color:var(--er);font-weight:800">Today/Mon</span>
+      </div>
+      <div class="sc-row">
+        <span class="sc-key">Archery targets blindfolded</span>
+        <span class="sc-fri" style="color:var(--er);font-weight:800">Due today</span>
+      </div>
+      <div class="sc-row">
+        <span class="sc-key">Air bed dominoes</span>
+        <span class="sc-fri" style="color:var(--er);font-weight:800">Due today/Sat</span>
+      </div>
+      <div class="sc-row">
+        <span class="sc-key">LO SHOW: Squat lift underwater</span>
+        <span class="sc-fri" style="color:var(--py);font-weight:800">Due 22 Jun</span>
+      </div>
+      <div class="sc-row">
+        <span class="sc-key">Football Records Snap</span>
+        <span class="sc-fri" style="color:var(--er);font-weight:800">51 days — decide</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLEARED THIS WEEK -->
+  <p class="sec-lbl">Cleared this week — Final Link Added</p>
+  <div class="cleared-grid">
+    <div class="cg-item"><span class="cg-check">✓</span><div><div class="cg-name">Lo Show EP 6 — knives in mouth</div><div class="cg-who">Abhimanieu · 19 days to sign-off finally cleared</div></div></div>
+    <div class="cg-item"><span class="cg-check">✓</span><div><div class="cg-name">Lo Show EP 7 — toe dips + leg presses</div><div class="cg-who">Abhimanieu · both subitems done</div></div></div>
+    <div class="cg-item"><span class="cg-check">✓</span><div><div class="cg-name">Lo Show EP 8 — 4 subitems</div><div class="cg-who">Abhimanieu · somersaults, frogs, bottles, stools</div></div></div>
+    <div class="cg-item"><span class="cg-check">✓</span><div><div class="cg-name">WTR: Big John (Snap + FB 9x16)</div><div class="cg-who">Roopali · both formats on MAM</div></div></div>
+    <div class="cg-item"><span class="cg-check">✓</span><div><div class="cg-name">Largest hands on a living teenager</div><div class="cg-who">Roopali · 1x1 on MAM</div></div></div>
+    <div class="cg-item"><span class="cg-check">✓</span><div><div class="cg-name">Connect four discs by a dog</div><div class="cg-who">Roopali · GWR Kids Short — in and out same week</div></div></div>
+    <div class="cg-item"><span class="cg-check">✓</span><div><div class="cg-name">Women Record Breakers — YT Short</div><div class="cg-who">Ajay · one format done, VoD in editing</div></div></div>
+    <div class="cg-item"><span class="cg-check">✓</span><div><div class="cg-name">LA Beast / Kevin Strahle</div><div class="cg-who">Roopali · moved to Editing this week (publish date 5 Jul)</div></div></div>
+    <div class="cg-item"><span class="cg-check">✓</span><div><div class="cg-name">Most blindfolded fidget spinner passes</div><div class="cg-who">Roopali · added and into Editing this week</div></div></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="sl">In editing</div><div class="sv" style="color:var(--py)">6</div><div class="ss">active cuts</div></div>
+    <div class="stat"><div class="sl">Footage sent</div><div class="sv" style="color:var(--pk)">7</div><div class="ss">awaiting edit start</div></div>
+    <div class="stat"><div class="sl">Your review</div><div class="sv" style="color:var(--er)">6</div><div class="ss">Greg Reviewing + Sign Off</div></div>
+    <div class="stat"><div class="sl">Due today</div><div class="sv" style="color:var(--er)">3</div><div class="ss">Archery · Air Bed · Stairs wheelchair</div></div>
+    <div class="stat"><div class="sl">Cleared this week</div><div class="sv" style="color:var(--pg)">12</div><div class="ss">tasks to Final Link Added</div></div>
+    <div class="stat"><div class="sl">New tasks this week</div><div class="sv" style="color:var(--pk)">9</div><div class="ss">added to pipeline</div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tbtn active" onclick="sw(0,this)">Do before EOD <span class="bdg br">4</span></button>
+    <button class="tbtn" onclick="sw(1,this)">Pipeline</button>
+    <button class="tbtn" onclick="sw(2,this)">Your review <span class="bdg br">6</span></button>
+    <button class="tbtn" onclick="sw(3,this)">By editor</button>
+    <button class="tbtn" onclick="sw(4,this)">Flags</button>
+  </div>
+
+  <!-- TAB 0: DO TODAY -->
+  <div id="tab-0" class="panel active">
+    <div class="acts">
+      <div class="act ar">
+        <div class="an">1</div>
+        <div>
+          <div class="at">WTR: Holly Murray — Bo Gwak's Snap subitem is in Sign Off. Review it before you leave. <a class="al" href="https://bravebisonplc.monday.com/boards/2090332801/pulses/3002079860" target="_blank">Open ↗</a></div>
+          <div class="ab">Added Tuesday. Bo delivered the Snap cut and it's sitting in Sign Off. The FB 1x1 is still Footage Sent. Approve the Snap now so it can go to upload, then check with Bo on the 1x1 status.</div>
+        </div>
+      </div>
+      <div class="act ar">
+        <div class="an">2</div>
+        <div>
+          <div class="at">Largest human air bed dominoes — due today, publish tomorrow. Ajay. <a class="al" href="https://bravebisonplc.monday.com/boards/2090332801/pulses/3008986841" target="_blank">Open ↗</a></div>
+          <div class="ab">Added Thursday. Ajay has the YT VoD in Editing. FB 9x16, YT Short and Snap are all Footage Sent. All 4 subitems due today for a Saturday publish. Confirm Ajay is across all formats and has no blockers.</div>
+        </div>
+      </div>
+      <div class="act ar">
+        <div class="an">3</div>
+        <div>
+          <div class="at">Archery targets blindfolded — due today. Roopali. 2 subitems Footage Sent. <a class="al" href="https://bravebisonplc.monday.com/boards/2090332801/pulses/3000635203" target="_blank">Open ↗</a></div>
+          <div class="ab">YT Short and FB 9x16 both still Footage Sent with subitems set. Roopali needs to have these done today. Chase now if you haven't heard from her.</div>
+        </div>
+      </div>
+      <div class="act ay">
+        <div class="an">4</div>
+        <div>
+          <div class="at">Loudest World Records — Ajay delivered all 4 on Friday 12th. Now in Sign Off. Still waiting on you. <a class="al" href="https://bravebisonplc.monday.com/boards/2090332801/pulses/2944967179" target="_blank">Open ↗</a></div>
+          <div class="ab">YT VoD, YT Short, FB 1x1, Snap — all have MAM links. Been in sign-off since Thursday. Don't carry this into next week. 10 minutes.</div>
+        </div>
+      </div>
+    </div>
+    <div class="ban ban-g">★ 9 things cleared this week. The Lo Show backlog is finally gone. Strong output from Roopali, Ajay and Abhimanieu. Take that into the weekend — but sort the 4 above first.</div>
+  </div>
+
+  <!-- TAB 1: PIPELINE -->
+  <div id="tab-1" class="panel">
+    <div class="frow">
+      <span class="flb">Stage:</span>
+      <select class="flt" id="sf" onchange="rp()">
+        <option value="all">All</option>
+        <option value="Footage Sent">Footage Sent</option>
+        <option value="Editing">Editing</option>
+        <option value="Greg Reviewing">Greg Reviewing</option>
+        <option value="Sign Off">Sign Off</option>
+        <option value="ON HOLD">ON HOLD</option>
+        <option value="Sourcing">Sourcing</option>
+      </select>
+      <span class="flb" style="margin-left:8px">Editor:</span>
+      <select class="flt" id="ef" onchange="rp()">
+        <option value="all">All</option>
+        <option value="Roopali Shukla">Roopali Shukla</option>
+        <option value="Abhimanieu Saji">Abhimanieu Saji</option>
+        <option value="Ajay Baby">Ajay Baby</option>
+        <option value="Bo Gwak">Bo Gwak</option>
+        <option value="Hannah Barness">Hannah Barness</option>
+      </select>
+    </div>
+    <table class="tbl">
+      <thead><tr><th>Task</th><th>Platform</th><th>Editor</th><th>Stage</th></tr></thead>
+      <tbody id="pb"></tbody>
+    </table>
+  </div>
+
+  <!-- TAB 2: YOUR REVIEW -->
+  <div id="tab-2" class="panel">
+    <p style="font-size:12px;color:rgba(246,246,246,.38);margin-bottom:11px">Six items on you. Three need clearing today. Loudest WRs has had MAM links since last Friday.</p>
+    <table class="tbl">
+      <thead><tr><th>Task</th><th>Format</th><th>Editor</th><th>Waiting</th></tr></thead>
+      <tbody>
+        <tr class="rh"><td><a class="tl" href="https://bravebisonplc.monday.com/boards/2090332801/pulses/2828248958" target="_blank">Football Records — Snapchat</a></td><td>Multi</td><td>Hannah Barness</td><td><span style="color:var(--er);font-weight:800">51 days</span></td></tr>
+        <tr class="rh"><td><a class="tl" href="https://bravebisonplc.monday.com/boards/2090332801/pulses/2944967179" target="_blank">Loudest World Records ×4 — all MAM links ready</a> <span class="cb">Action needed</span></td><td>Multi</td><td>Ajay Baby</td><td><span style="color:var(--er);font-weight:800">7 days</span></td></tr>
+        <tr class="rh"><td><a class="tl" href="https://bravebisonplc.monday.com/boards/2106955333/pulses/3007530694" target="_blank">Women Record Breakers — FB 1x1</a></td><td>Multi</td><td>Ajay Baby</td><td><span style="color:var(--py);font-weight:800">Today</span></td></tr>
+        <tr class="rh"><td><a class="tl" href="https://bravebisonplc.monday.com/boards/2090332801/pulses/3002079860" target="_blank">WTR: Holly Murray — Snap</a> <span class="nb">Today</span></td><td>Multi</td><td>Bo Gwak</td><td><span style="color:var(--er);font-weight:800">Sign Off</span></td></tr>
+        <tr class="rh"><td><a class="tl" href="https://bravebisonplc.monday.com/boards/2106955333/pulses/2882467393" target="_blank">Fails Comp — YT Short 9x16 (×2)</a></td><td>Multi</td><td>Roopali Shukla</td><td><span style="color:var(--er);font-weight:800">40 days</span></td></tr>
+        <tr class="rh"><td><a class="tl" href="https://bravebisonplc.monday.com/boards/2106955333/pulses/2826119545" target="_blank">Football Shirts — YT Main VoD (subitem)</a></td><td>Multi</td><td>Roopali Shukla</td><td><span style="color:var(--er);font-weight:800">Long-standing</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TAB 3: BY EDITOR -->
+  <div id="tab-3" class="panel">
+    <div class="eg">
+      <div class="eh"><div class="ec">Editor</div></div>
+      <div class="eh"><div class="ec" style="color:var(--pk)">Footage</div></div>
+      <div class="eh"><div class="ec" style="color:var(--py)">Editing</div></div>
+      <div class="eh"><div class="ec" style="color:var(--pg)">Review</div></div>
+      <div class="eh"><div class="ec" style="color:var(--sky)">Sign Off</div></div>
+      <div class="eh"><div class="ec">Active</div></div>
+
+      <div class="ec"><div class="en">Roopali Shukla</div></div>
+      <div class="ec"><div class="ev" style="color:var(--pk)">3</div></div>
+      <div class="ec"><div class="ev" style="color:var(--py)">3</div></div>
+      <div class="ec"><div class="ed">—</div></div>
+      <div class="ec"><div class="ed">—</div></div>
+      <div class="ec"><div class="et">6</div></div>
+
+      <div class="ec"><div class="en">Abhimanieu Saji</div></div>
+      <div class="ec"><div class="ev" style="color:var(--pk)">2</div></div>
+      <div class="ec"><div class="ev" style="color:var(--py)">2</div></div>
+      <div class="ec"><div class="ed">—</div></div>
+      <div class="ec"><div class="ed">—</div></div>
+      <div class="ec"><div class="et">4</div></div>
+
+      <div class="ec"><div class="en">Ajay Baby</div></div>
+      <div class="ec"><div class="ev" style="color:var(--pk)">1</div></div>
+      <div class="ec"><div class="ev" style="color:var(--py)">2</div></div>
+      <div class="ec"><div class="ev" style="color:var(--pg)">2</div></div>
+      <div class="ec"><div class="ev" style="color:var(--sky)">4</div></div>
+      <div class="ec"><div class="et">9</div></div>
+
+      <div class="ec"><div class="en">Bo Gwak</div></div>
+      <div class="ec"><div class="ev" style="color:var(--pk)">1</div></div>
+      <div class="ec"><div class="ed">—</div></div>
+      <div class="ec"><div class="ed">—</div></div>
+      <div class="ec"><div class="ev" style="color:var(--sky)">1</div></div>
+      <div class="ec"><div class="et">2</div></div>
+
+      <div class="ec"><div class="en">Hannah Barness</div></div>
+      <div class="ec"><div class="ed">—</div></div>
+      <div class="ec"><div class="ev" style="color:var(--py)">1</div></div>
+      <div class="ec"><div class="ed">—</div></div>
+      <div class="ec"><div class="ed">—</div></div>
+      <div class="ec"><div class="et">1</div></div>
+    </div>
+    <p class="subnote">Ajay's high sign-off count (4) is Loudest WRs — all 4 formats waiting on you, not a workload issue. His actual editing load is Women Record Breakers VoD + Air Bed Dominoes. Roopali and Abhimanieu both have steady active loads. Bo is light — Sultan is Hannah's task, not Bo's.</p>
+  </div>
+
+  <!-- TAB 4: FLAGS -->
+  <div id="tab-4" class="panel">
+    <div class="fl">
+      <div class="fli"><div class="fdot fd-g"></div><div><div class="ft">Lo Show Eps 6–8 — all 7 sign-off subitems cleared Monday morning. Done.</div><div class="fb">This was flagged on every daily update since 27 May. It took 19 days but it's gone. Every subitem now has a MAM link.</div></div></div>
+      <div class="fli"><div class="fdot fd-g"></div><div><div class="ft">12 tasks cleared this week. Strong throughput from all three main editors.</div><div class="fb">Roopali cleared WTR Big John, Largest Hands, Connect Four dog, fidget spinner. Abhimanieu cleared all 7 Lo Show subitems. Ajay cleared Women Record Breakers YT Short and is mid-air-bed-dominoes today.</div></div></div>
+      <div class="fli"><div class="fdot fd-r"></div><div><div class="ft">Football Records Snap — 51 days. Oldest item on the board. Unchanged since 28 April.</div><div class="fb">This has to be decided next week. It's not going away. Either approve it, flag a genuine client blocker, or close the task. 51 days is not a queue — it's a decision being avoided.</div></div></div>
+      <div class="fli"><div class="fdot fd-r"></div><div><div class="ft">Loudest World Records — Ajay delivered all 4 formats on Friday 12th. They've been in Sign Off for a week.</div><div class="fb">YT VoD, YT Short, FB 1x1, Snap — all on MAM. These need your sign-off today. Don't carry them into a second weekend.</div></div></div>
+      <div class="fli"><div class="fdot fd-r"></div><div><div class="ft">Air Bed Dominoes — due today, Saturday publish. Ajay has 3 of 4 formats still Footage Sent.</div><div class="fb">Only the YT VoD is confirmed Editing. FB 9x16, YT Short, and Snap are all still Footage Sent. This is today's most time-sensitive production task. Confirm with Ajay now.</div></div></div>
+      <div class="fli"><div class="fdot fd-y"></div><div><div class="ft">Sultan Meet the Record Holder — still Editing with Hannah, past due (was 17 June).</div><div class="fb">All 4 subitems are in Editing and have been since the 9th. Check when this is expected and whether it needs a date update.</div></div></div>
+      <div class="fli"><div class="fdot fd-y"></div><div><div class="ft">LO SHOW: Squat lift underwater — Abhimanieu, footage sent, due 22 June. Next Monday.</div><div class="fb">Added Thursday. Footage sent date 18 June. Due in 3 days. Make sure subitems are set up and Abhimanieu has started this before the weekend.</div></div></div>
+      <div class="fli"><div class="fdot fd-y"></div><div><div class="ft">Cupcakes iced + Archery blindfolded + Stairs wheelchair — all due today, all Footage Sent or Editing.</div><div class="fb">Three tasks all landing on a Friday. Confirm completion status with Roopali and Bo before end of business.</div></div></div>
+      <div class="fli"><div class="fdot fd-y"></div><div><div class="ft">3 new Sourcing tasks with no editors assigned: Eric Kilburn MTR, Chennai Hoopers, Longest Hair.</div><div class="fb">All three were added Monday. No editor, no due date, no subitems. Plan these before Monday or they'll start next week invisible.</div></div></div>
+    </div>
+    <div class="ban ban-g" style="margin-top:14px">★ The week's single biggest win: Lo Show Eps 6–8, done. 7 subitems, 19 days, finally off the board. The sign-off queue is now 2 structural holdouts (Football Records, Fails Comp) plus 4 items you can clear today. Good week — finish it properly.</div>
+  </div>
+
+</div>
+
+<div class="footer">Brave Bison · GWR Edit Pipeline · Internal · Friday 19 June 2026 · Have a good weekend</div>
+
+<script>
+const TICKS=[
+  {n:"Lo Show Eps 6–8",v:"All 7 cleared ✓",a:"✓",c:"tg"},
+  {n:"WTR: Big John",v:"Final Link Added ✓",a:"✓",c:"tg"},
+  {n:"Largest hands teenager",v:"Final Link Added ✓",a:"✓",c:"tg"},
+  {n:"Connect four by dog",v:"In & out same week ✓",a:"✓",c:"tg"},
+  {n:"12 tasks",v:"cleared this week",a:"↑",c:"tg"},
+  {n:"Sign-off queue",v:"9 → 2",a:"↓",c:"tg"},
+  {n:"Football Records Snap",v:"51 days — decide next week",a:"!",c:"tr"},
+  {n:"Loudest WRs ×4",v:"Sign Off — yours since Fri 12",a:"!",c:"tr"},
+  {n:"Air Bed Dominoes",v:"Due today · Saturday publish",a:"!",c:"tr"},
+  {n:"WTR: Holly Murray",v:"Sign Off · approve today",a:"!",c:"tr"},
+  {n:"LO SHOW: Squat lift",v:"Due Mon 22 Jun",a:"!",c:"ty"},
+  {n:"9 new tasks",v:"added this week",a:"↑",c:"tp"},
+];
+function mkt(){return TICKS.map(t=>`<div class="ti ${t.c}"><span class="tn">${t.n}</span><span class="tv">${t.v}</span><span class="ta">${t.a}</span></div>`).join('')}
+document.getElementById('ti1').innerHTML=mkt();
+document.getElementById('ti2').innerHTML=mkt();
+
+const SC={
+  "Sourcing":{cls:"p-src"},"Footage Sent":{cls:"p-fs"},"Editing":{cls:"p-ed"},
+  "Greg Reviewing":{cls:"p-gr"},"Sign Off":{cls:"p-sig"},"Final Link Added":{cls:"p-fin"},"ON HOLD":{cls:"p-hld"}
+};
+
+const PIPE=[
+  // DUE TODAY
+  {n:"Largest human air bed dominoes",pl:"Multi-Platform",ed:"Ajay Baby",st:"Editing",due:"Today — Sat publish",dp:"high",isNew:true,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/3008986841"},
+  {n:"Most archery targets hit blindfolded",pl:"Multi-Platform",ed:"Roopali Shukla",st:"Footage Sent",due:"Today",dp:"high",isNew:true,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/3000635203"},
+  {n:"Most stairs descended in wheelchair (hands)",pl:"Multi-Platform",ed:"Bo Gwak",st:"Footage Sent",due:"Today",dp:"high",isNew:true,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/3000618367"},
+  {n:"Most cupcakes iced in one minute",pl:"GWR Kids Short",ed:"Roopali Shukla",st:"Footage Sent",due:"18 Jun — overdue",dp:"high",isNew:false,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/3000601262"},
+  // SIGN OFF / REVIEW
+  {n:"WTR: Holly Murray",pl:"Multi-Platform",ed:"Bo Gwak",st:"Sign Off",due:"Approve today",dp:"high",isNew:true,chg:"Snap ready",win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/3002079860"},
+  {n:"Loudest World Records (×4 MAM links)",pl:"Multi-Platform",ed:"Ajay Baby",st:"Sign Off",due:"7 days waiting",dp:"high",isNew:false,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/2944967179"},
+  {n:"Football Records — Snapchat",pl:"Multi-Platform",ed:"Hannah Barness",st:"Sign Off",due:"30 Apr — 51 days",dp:"high",isNew:false,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/2828248958"},
+  {n:"Fails Comp — YT Short 9x16 (×2)",pl:"Multi-Platform",ed:"Roopali Shukla",st:"Greg Reviewing",due:"8 May — 40 days",dp:"high",isNew:false,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/2882469351"},
+  {n:"Women Record Breakers — FB 1x1",pl:"Multi-Platform",ed:"Ajay Baby",st:"Greg Reviewing",due:null,dp:"normal",isNew:false,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2106955333/pulses/3007530694"},
+  // EDITING
+  {n:"Sultan Meet the Record Holder",pl:"Multi-Platform",ed:"Hannah Barness",st:"Editing",due:"17 Jun — overdue",dp:"high",isNew:false,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/2944937085"},
+  {n:"Animal Comp (VoD + FB 1x1)",pl:"Multi-Platform",ed:"Abhimanieu Saji",st:"Editing",due:"8 Jun — overdue",dp:"high",isNew:false,chg:"subitems finally started",win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/2944929473"},
+  {n:"Women Record Breakers — YT VoD",pl:"Multi-Platform",ed:"Ajay Baby",st:"Editing",due:null,dp:"normal",isNew:false,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2106955333/pulses/3007530119"},
+  {n:"Women Record Breakers — Snap",pl:"Multi-Platform",ed:"Ajay Baby",st:"Editing",due:null,dp:"normal",isNew:false,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2106955333/pulses/3007530682"},
+  {n:"Most blindfolded fidget spinner passes",pl:"GWR Kids Short",ed:"Roopali Shukla",st:"Editing",due:null,dp:"normal",isNew:true,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/3000585686"},
+  {n:"LA Beast: Kevin Strahle",pl:"Multi-Platform",ed:"Roopali Shukla",st:"Editing",due:"15 Jun — overdue",dp:"high",isNew:false,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/2983355037"},
+  // FOOTAGE SENT
+  {n:"LO SHOW: Squat lift + backward handsprings underwater",pl:"Multi-Platform",ed:"Abhimanieu Saji",st:"Footage Sent",due:"22 Jun — Mon",dp:"high",isNew:true,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/3007929887"},
+  {n:"Stairs — back bend (15 stairs up/down)",pl:"Multi-Platform",ed:"Roopali Shukla",st:"Footage Sent",due:"19 Jun — TODAY",dp:"high",isNew:false,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/2987372366"},
+  {n:"Most rotating puzzle cubes — upside down",pl:"Multi-Platform",ed:"Abhimanieu Saji",st:"Footage Sent",due:"17 Jun — overdue",dp:"high",isNew:false,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/2970174504"},
+  {n:"Youngest to curate a museum (male)",pl:"Multi-Platform",ed:"Ajay Baby",st:"Footage Sent",due:"26 Jun",dp:"normal",isNew:true,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/3004676609"},
+  {n:"Lo Show Dei Record Ep 5",pl:"Reel",ed:"Abhimanieu Saji",st:"Footage Sent",due:"22 Jun",dp:"normal",isNew:false,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/2935307581"},
+  // SOURCING — new unassigned
+  {n:"Eric Kilburn: Meet The Record Holder",pl:"Multi-Platform",ed:"Unassigned",st:"Sourcing",due:null,dp:"normal",isNew:true,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/2998350388"},
+  {n:"Chennai Hoopers",pl:"GWR Kids VoD",ed:"Unassigned",st:"Sourcing",due:null,dp:"normal",isNew:true,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/2998466492"},
+  {n:"Longest Hair",pl:"Multi-Platform",ed:"Unassigned",st:"Sourcing",due:null,dp:"normal",isNew:true,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/2998474214"},
+  // ON HOLD
+  {n:"Hercules Pillars — female",pl:"Multi-Platform",ed:"Abhimanieu Saji",st:"ON HOLD",due:null,dp:"normal",isNew:false,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/2945476120"},
+  {n:"Largest Collection of Football Shirts",pl:"Multi-Platform",ed:"Roopali Shukla",st:"ON HOLD",due:null,dp:"normal",isNew:false,chg:null,win:false,url:"https://bravebisonplc.monday.com/boards/2090332801/pulses/2826111984"},
+];
+
+function pill(s){const c=SC[s]||{cls:"p-src"};return`<span class="pill ${c.cls}">${s}</span>`}
+function rp(){
+  const sf=document.getElementById('sf').value;
+  const ef=document.getElementById('ef').value;
+  const f=PIPE.filter(t=>(sf==='all'||t.st===sf)&&(ef==='all'||t.ed===ef));
+  const b=document.getElementById('pb');
+  if(!f.length){b.innerHTML='<tr><td colspan="4" style="padding:18px;text-align:center;color:rgba(246,246,246,.22)">No tasks match.</td></tr>';return}
+  b.innerHTML=f.map(t=>{
+    const rc=t.win?'rw':t.isNew?'rn':t.dp==='high'?'rh':'';
+    const wn=t.win?'<span class="wn">✓</span>':'';
+    const ch=t.chg?`<span class="cb">${t.chg}</span>`:'';
+    const nb=t.isNew?'<span class="nb">New</span>':'';
+    let dc=t.due?(t.due.includes('overdue')||t.due.includes('days')||t.due.includes('Today')||t.due.includes('TODAY')?'do':t.due.includes('Jun')?'dw':'dk'):'';
+    const dt=t.due?`<span class="dtag ${dc}">⚑ ${t.due}</span>`:'';
+    const ec=t.ed==='Unassigned'?'style="color:var(--er);font-weight:800"':'';
+    return`<tr class="${rc}"><td>${wn}${nb}${ch}<a class="tl" href="${t.url}" target="_blank">${t.n}</a>${dt}</td><td>${t.pl}</td><td ${ec}>${t.ed}</td><td>${pill(t.st)}</td></tr>`;
+  }).join('');
+}
+function sw(i,btn){
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+i).classList.add('active');
+}
+rp();
+</script>
+</body>
+</html>
