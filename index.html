@@ -1,43 +1,443 @@
-GWR EDIT PIPELINE · LIVE · TUESDAY 23 JUNE 2026
-Good progress today. David Rush needs to start.
-GREG HOLLANDS · SENIOR ACCOUNT MANAGER
-·
-OPEN MONDAY ↗
-SINCE YESTERDAY
-IN EDITING
-4
-active cuts
-FOOTAGE SENT
-5
-awaiting edit start
-GREG REVIEWING
-5
-waiting on you
-SIGN OFF QUEUE
-3
-Sultan · Stairs · Holly Murray
-CLEARED TODAY
-2
-Air Bed Dominoes · Archery
-DUE THU 26 JUN
-1
-David Rush MTRH — not started
-DO TODAY 4
-PIPELINE
-REVIEW QUEUE 8
-BY EDITOR
-FLAGS
-1
-David Rush MTRH — due Thursday. 4 subitems still Footage Sent. Ajay needs to start the VoD today. OPEN ↗
-Footage has been on MAM since Friday 19 June. All 4 subitems (YT VoD, FB 1x1, YT Short, Snap) are Footage Sent with Ajay. Due Thursday 26 June. An 8min+ VoD with 3 days left needs to start this morning. Brief Ajay now.
-2
-Sultan Meet the Record Holder — still at Sign Off. Hannah delivered last weekend. OPEN ↗
-Was due 17 June. Parent is Sign Off but subitems still show Editing — check Hannah has submitted the final cuts and sign off today. This has been in your queue since Sunday.
-3
-Stairs back bend — moved to Greg Reviewing today. Roopali delivered. OPEN ↗
-Parent moved to Greg Reviewing this morning. Publish date was set as 20 June — already overdue. Review and approve today so the channel manager can upload.
-4
-Loudest World Records ×4 — Sign Off for 11 days. All MAM links ready. OPEN ↗
-Ajay delivered all 4 formats on 12 June. YT VoD, YT Short, FB 1x1, Snap — all on MAM. This has been in your queue for nearly two weeks. Clear it today.
-★ Good morning: Air Bed Dominoes (all 4 formats) and Archery blindfolded both cleared to Final Link Added today. Ajay and Roopali both delivered. Now your turn on the above 4.
-BRAVE BISON · GWR EDIT PIPELINE · INTERNAL · TUESDAY 23 JUNE 2026
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GWR Edit Pipeline — Daily Briefing</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', 'Helvetica Neue', Arial, sans-serif; background: #F5F4F0; min-height: 100vh; padding-bottom: 48px; color: #111; }
+
+  /* Header */
+  .header { background: #0F0F0E; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .header-eyebrow { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 4px; }
+  .header-title { font-size: 19px; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
+  .header-link { font-size: 12px; padding: 7px 14px; border: 1px solid #2A2A28; border-radius: 8px; color: #999; text-decoration: none; background: #1A1A18; white-space: nowrap; }
+  .header-link:hover { color: #ccc; }
+
+  /* Main container */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* Metric tiles */
+  .metrics { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+  .metric-tile { background: #fff; border: 1px solid #E8E8E6; border-radius: 12px; padding: 16px 18px; flex: 1; min-width: 140px; }
+  .metric-label { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 700; margin-bottom: 6px; }
+  .metric-row { display: flex; align-items: baseline; gap: 8px; }
+  .metric-value { font-size: 28px; font-weight: 700; line-height: 1; }
+  .metric-delta { font-size: 11px; font-weight: 600; }
+  .delta-up { color: #E24B4A; }
+  .delta-down { color: #22C55E; }
+  .metric-sub { font-size: 11px; color: #999; margin-top: 5px; }
+
+  /* Tabs */
+  .tabs { border-bottom: 1.5px solid #DDD; margin-bottom: 20px; display: flex; gap: 0; overflow-x: auto; }
+  .tab-btn { background: none; border: none; border-bottom: 2.5px solid transparent; margin-bottom: -1.5px; padding: 9px 18px; font-size: 13px; font-weight: 500; color: #888; cursor: pointer; font-family: inherit; letter-spacing: 0.01em; white-space: nowrap; transition: color 0.15s; }
+  .tab-btn:hover { color: #444; }
+  .tab-btn.active { font-weight: 700; color: #111; border-bottom-color: #111; }
+  .tab-badge { margin-left: 6px; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 99px; color: #fff; }
+  .badge-red { background: #DC2626; }
+  .badge-green { background: #16A34A; }
+
+  /* Tab panels */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Filters */
+  .filters { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .filter-select { font-size: 12px; padding: 6px 10px; border-radius: 8px; border: 1px solid #DDD; background: #fff; font-family: inherit; color: #333; cursor: pointer; }
+  .filter-select:focus { outline: none; border-color: #aaa; }
+  .filter-new-btn { font-size: 12px; padding: 6px 12px; border-radius: 8px; border: 1px solid #7C3AED; background: #F5F0FF; color: #7C3AED; font-family: inherit; cursor: pointer; font-weight: 600; }
+
+  /* Cards / tables */
+  .card { background: #fff; border: 1px solid #E8E8E6; border-radius: 12px; overflow: hidden; }
+  .card-mb { margin-bottom: 12px; }
+
+  .table-header { display: grid; gap: 8px; padding: 8px 16px; background: #FAFAF9; border-bottom: 1px solid #E8E8E6; font-size: 11px; font-weight: 700; color: #BBB; text-transform: uppercase; letter-spacing: 0.07em; }
+  .table-row { display: grid; gap: 8px; padding: 10px 16px; border-bottom: 1px solid #F2F1EE; align-items: center; }
+  .table-row:last-child { border-bottom: none; }
+  .table-row:hover { background: #FAFAF9 !important; }
+
+  /* Pipeline cols */
+  .cols-pipeline { grid-template-columns: 2.6fr 1fr 1.2fr 0.9fr; }
+  /* Sign-off cols */
+  .cols-signoff { grid-template-columns: 2.5fr 1fr 1.1fr 1fr; }
+  /* Editor cols */
+  .cols-editor { grid-template-columns: 1.3fr 0.7fr 0.7fr 0.7fr 0.8fr 0.9fr; }
+  /* Completed cols */
+  .cols-completed { grid-template-columns: 2.5fr 1fr 1.2fr; }
+
+  .row-new { background: #FDFBFF !important; }
+  .row-high { background: #FFFBFB !important; }
+  .row-signoff { background: #FFFBFB !important; }
+  .row-completed { background: #FAFFFE !important; }
+
+  .task-name { font-weight: 600; font-size: 13px; color: #111; text-decoration: none; }
+  .task-name:hover { text-decoration: underline; }
+  .task-due { margin-left: 8px; font-size: 10px; font-weight: 600; }
+  .due-high { color: #DC2626; }
+  .due-normal { color: #888; }
+  .new-badge { font-size: 10px; font-weight: 700; color: #7C3AED; margin-right: 6px; background: #EDE9FE; padding: 1px 6px; border-radius: 4px; }
+  .col-platform { font-size: 12px; color: #666; }
+  .col-editor { font-size: 12px; color: #555; }
+  .col-editor-unassigned { font-size: 12px; color: #DC2626; font-weight: 700; }
+  .col-age { font-size: 12px; color: #DC2626; font-weight: 600; }
+  .monday-link { font-size: 11px; color: #2563EB; text-decoration: none; display: block; margin-top: 2px; }
+  .monday-link:hover { text-decoration: underline; }
+  .check-name { font-weight: 500; font-size: 13px; color: #111; }
+
+  /* Status pills */
+  .pill { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; letter-spacing: 0.02em; display: inline-block; }
+
+  /* Editor metric numbers */
+  .ed-num { font-size: 17px; font-weight: 700; }
+  .ed-total { font-size: 15px; font-weight: 600; color: #666; }
+
+  /* Flags */
+  .flags-list { display: flex; flex-direction: column; gap: 10px; }
+  .flag-item { border-radius: 10px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; border: 1px solid; }
+  .flag-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+  .flag-title { font-weight: 700; font-size: 13px; color: #111; margin-bottom: 4px; }
+  .flag-body { font-size: 13px; color: #555; line-height: 1.55; }
+  .flag-note { margin-top: 4px; padding: 14px 16px; background: #F7F6F2; border: 1px dashed #DDD; border-radius: 10px; font-size: 12px; color: #888; line-height: 1.6; }
+
+  .sub-note { font-size: 12px; color: #999; margin-top: 10px; }
+  .tab-intro { font-size: 13px; color: #888; margin-bottom: 12px; }
+
+  .empty-state { padding: 24px; text-align: center; color: #999; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div>
+    <div class="header-eyebrow">EXT | GWR Edit Pipeline · Live</div>
+    <div class="header-title">Daily briefing — Wednesday 27 May 2026</div>
+  </div>
+  <a class="header-link" href="https://bravebisonplc.monday.com/boards/2090332801" target="_blank" rel="noopener noreferrer">Open in Monday ↗</a>
+</div>
+
+<div class="container">
+
+  <!-- Metrics -->
+  <div class="metrics">
+    <div class="metric-tile">
+      <div class="metric-label">New tasks today</div>
+      <div class="metric-row">
+        <div class="metric-value" style="color:#7C3AED">5</div>
+        <span class="metric-delta delta-up">+5 vs last update</span>
+      </div>
+      <div class="metric-sub">added to pipeline</div>
+    </div>
+    <div class="metric-tile">
+      <div class="metric-label">Footage sent</div>
+      <div class="metric-row">
+        <div class="metric-value" style="color:#4F46E5">4</div>
+        <span class="metric-delta delta-down">−5 vs last update</span>
+      </div>
+      <div class="metric-sub">awaiting edit start</div>
+    </div>
+    <div class="metric-tile">
+      <div class="metric-label">In editing</div>
+      <div class="metric-row">
+        <div class="metric-value" style="color:#B45309">4</div>
+      </div>
+      <div class="metric-sub">active editors</div>
+    </div>
+    <div class="metric-tile">
+      <div class="metric-label">Your sign-off</div>
+      <div class="metric-row">
+        <div class="metric-value" style="color:#DC2626">4</div>
+      </div>
+      <div class="metric-sub">blocking progress</div>
+    </div>
+    <div class="metric-tile">
+      <div class="metric-label">Cleared today</div>
+      <div class="metric-row">
+        <div class="metric-value" style="color:#16A34A">15</div>
+        <span class="metric-delta delta-down">+15 vs last update</span>
+      </div>
+      <div class="metric-sub">moved to Final Link</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(0, this)">Active pipeline</button>
+    <button class="tab-btn" onclick="switchTab(1, this)">Sign-off <span class="tab-badge badge-red">4</span></button>
+    <button class="tab-btn" onclick="switchTab(2, this)">By editor</button>
+    <button class="tab-btn" onclick="switchTab(3, this)">Completed today <span class="tab-badge badge-green">15</span></button>
+    <button class="tab-btn" onclick="switchTab(4, this)">Flags</button>
+  </div>
+
+  <!-- TAB 0: ACTIVE PIPELINE -->
+  <div id="tab-0" class="tab-panel active">
+    <div class="filters">
+      <select class="filter-select" id="stage-filter" onchange="filterPipeline()">
+        <option value="all">All stages</option>
+        <option value="Footage Sent">Footage Sent</option>
+        <option value="Editing">Editing</option>
+        <option value="Greg Reviewing">Greg Reviewing</option>
+        <option value="ON HOLD">ON HOLD</option>
+      </select>
+      <select class="filter-select" id="editor-filter" onchange="filterPipeline()">
+        <option value="all">All editors</option>
+        <option value="Roopali Shukla">Roopali Shukla</option>
+        <option value="Abhimanieu Saji">Abhimanieu Saji</option>
+        <option value="Ajay Baby">Ajay Baby</option>
+        <option value="Bo Gwak">Bo Gwak</option>
+        <option value="Hannah Barness">Hannah Barness</option>
+      </select>
+      <button class="filter-new-btn" onclick="resetFilters()">● New today: 5</button>
+    </div>
+    <div class="card">
+      <div class="table-header cols-pipeline">
+        <span>Task</span><span>Platform</span><span>Editor</span><span>Stage</span>
+      </div>
+      <div id="pipeline-body"></div>
+    </div>
+  </div>
+
+  <!-- TAB 1: SIGN-OFF -->
+  <div id="tab-1" class="tab-panel">
+    <p class="tab-intro">All of these are blocked by you. None of them should still be here.</p>
+    <div class="card">
+      <div class="table-header cols-signoff">
+        <span>Task</span><span>Format</span><span>Editor</span><span>Time waiting</span>
+      </div>
+      <div class="table-row cols-signoff row-signoff">
+        <div>
+          <a class="task-name" href="https://bravebisonplc.monday.com/boards/2090332801/pulses/2893011859" target="_blank">LEGO Star Wars — YT VoD (subitem in Greg Reviewing)</a>
+          <a class="monday-link" href="https://bravebisonplc.monday.com/boards/2090332801/pulses/2893011859" target="_blank">Open in Monday ↗</a>
+        </div>
+        <span class="col-platform">Multi-Platform</span>
+        <span class="col-editor">Roopali Shukla</span>
+        <span class="col-age">12 days overdue</span>
+      </div>
+      <div class="table-row cols-signoff row-signoff">
+        <div>
+          <a class="task-name" href="https://bravebisonplc.monday.com/boards/2090332801/pulses/2828248958" target="_blank">Football Records — Snapchat</a>
+          <a class="monday-link" href="https://bravebisonplc.monday.com/boards/2090332801/pulses/2828248958" target="_blank">Open in Monday ↗</a>
+        </div>
+        <span class="col-platform">Multi-Platform</span>
+        <span class="col-editor">Hannah Barness</span>
+        <span class="col-age">27 days overdue</span>
+      </div>
+      <div class="table-row cols-signoff row-signoff">
+        <div>
+          <a class="task-name" href="https://bravebisonplc.monday.com/boards/2090332801/pulses/2882469351" target="_blank">Fails Comp — YT Short 9x16 (×2)</a>
+          <a class="monday-link" href="https://bravebisonplc.monday.com/boards/2090332801/pulses/2882469351" target="_blank">Open in Monday ↗</a>
+        </div>
+        <span class="col-platform">Multi-Platform</span>
+        <span class="col-editor">Roopali Shukla</span>
+        <span class="col-age">19 days overdue</span>
+      </div>
+      <div class="table-row cols-signoff row-signoff">
+        <div>
+          <a class="task-name" href="https://bravebisonplc.monday.com/boards/2106955333/pulses/2918608797" target="_blank">Pogo Stick — no-handed back flips</a>
+          <a class="monday-link" href="https://bravebisonplc.monday.com/boards/2106955333/pulses/2918608797" target="_blank">Open in Monday ↗</a>
+        </div>
+        <span class="col-platform">Multi-Platform</span>
+        <span class="col-editor">Roopali Shukla</span>
+        <span class="col-age">No link yet</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: BY EDITOR -->
+  <div id="tab-2" class="tab-panel">
+    <div class="card card-mb">
+      <div class="table-header cols-editor">
+        <span>Editor</span>
+        <span style="color:#4F46E5">Footage</span>
+        <span style="color:#B45309">Editing</span>
+        <span style="color:#1D4ED8">Review</span>
+        <span style="color:#16A34A">Cleared</span>
+        <span>Total active</span>
+      </div>
+      <div class="table-row cols-editor">
+        <strong>Roopali Shukla</strong>
+        <span class="ed-num" style="color:#4F46E5">1</span>
+        <span class="ed-num" style="color:#B45309">2</span>
+        <span class="ed-num" style="color:#1D4ED8">3</span>
+        <span class="ed-num" style="color:#16A34A">+9</span>
+        <span class="ed-total">6</span>
+      </div>
+      <div class="table-row cols-editor">
+        <strong>Abhimanieu Saji</strong>
+        <span class="ed-num" style="color:#4F46E5">2</span>
+        <span class="ed-num" style="color:#B45309">1</span>
+        <span class="ed-num" style="color:#DDD">—</span>
+        <span class="ed-num" style="color:#16A34A">+4</span>
+        <span class="ed-total">3</span>
+      </div>
+      <div class="table-row cols-editor">
+        <strong>Ajay Baby</strong>
+        <span class="ed-num" style="color:#4F46E5">2</span>
+        <span class="ed-num" style="color:#B45309">1</span>
+        <span class="ed-num" style="color:#DDD">—</span>
+        <span class="ed-num" style="color:#16A34A">+4</span>
+        <span class="ed-total">3</span>
+      </div>
+      <div class="table-row cols-editor">
+        <strong>Bo Gwak</strong>
+        <span class="ed-num" style="color:#DDD">—</span>
+        <span class="ed-num" style="color:#B45309">1</span>
+        <span class="ed-num" style="color:#DDD">—</span>
+        <span class="ed-num" style="color:#DDD">—</span>
+        <span class="ed-total">1</span>
+      </div>
+      <div class="table-row cols-editor">
+        <strong>Hannah Barness</strong>
+        <span class="ed-num" style="color:#DDD">—</span>
+        <span class="ed-num" style="color:#DDD">—</span>
+        <span class="ed-num" style="color:#1D4ED8">1</span>
+        <span class="ed-num" style="color:#DDD">—</span>
+        <span class="ed-total">1</span>
+      </div>
+    </div>
+    <p class="sub-note">Cleared = tasks moved to Final Link Added since the last pull. Stage counts are parent-task level.</p>
+  </div>
+
+  <!-- TAB 3: COMPLETED TODAY -->
+  <div id="tab-3" class="tab-panel">
+    <p class="tab-intro">15 tasks moved to Final Link Added since the last update. Good output.</p>
+    <div class="card">
+      <div class="table-header cols-completed">
+        <span>Task</span><span>Platform</span><span>Editor</span>
+      </div>
+      <div class="table-row cols-completed row-completed"><span class="check-name">✓ Loudest Burp (Female)</span><span class="col-platform">Multi-Platform</span><span class="col-editor">Abhimanieu Saji</span></div>
+      <div class="table-row cols-completed row-completed"><span class="check-name">✓ Longest basketball shot (male)</span><span class="col-platform">Multi-Platform</span><span class="col-editor">Roopali Shukla</span></div>
+      <div class="table-row cols-completed row-completed"><span class="check-name">✓ Most whip cracks on a balance board</span><span class="col-platform">Multi-Platform</span><span class="col-editor">Roopali Shukla</span></div>
+      <div class="table-row cols-completed row-completed"><span class="check-name">✓ Oldest waterskier (male)</span><span class="col-platform">Multi-Platform</span><span class="col-editor">Roopali Shukla</span></div>
+      <div class="table-row cols-completed row-completed"><span class="check-name">✓ Fastest time to assemble Mr. Potato Head</span><span class="col-platform">Multi-Platform</span><span class="col-editor">Roopali Shukla</span></div>
+      <div class="table-row cols-completed row-completed"><span class="check-name">✓ Fastest time ascend/descend stairs in back bend</span><span class="col-platform">YT Shorts</span><span class="col-editor">Roopali Shukla</span></div>
+      <div class="table-row cols-completed row-completed"><span class="check-name">✓ LO SHOW: Sandbags on wheelbarrow</span><span class="col-platform">Reel</span><span class="col-editor">Roopali Shukla</span></div>
+      <div class="table-row cols-completed row-completed"><span class="check-name">✓ LO SHOW: Aerial straps (mouth support)</span><span class="col-platform">Reel</span><span class="col-editor">Roopali Shukla</span></div>
+      <div class="table-row cols-completed row-completed"><span class="check-name">✓ LO SHOW: Fastest 100m slackline (blindfolded)</span><span class="col-platform">Reel</span><span class="col-editor">Roopali Shukla</span></div>
+      <div class="table-row cols-completed row-completed"><span class="check-name">✓ Most stage illusion tricks in 3 mins</span><span class="col-platform">1x1</span><span class="col-editor">Abhimanieu Saji</span></div>
+      <div class="table-row cols-completed row-completed"><span class="check-name">✓ LO SHOW: Skywalk between hot air balloons</span><span class="col-platform">Reel</span><span class="col-editor">Abhimanieu Saji</span></div>
+      <div class="table-row cols-completed row-completed"><span class="check-name">✓ Smallest, Shortest, Thinnest (most formats)</span><span class="col-platform">Multi-Platform</span><span class="col-editor">Ajay Baby</span></div>
+      <div class="table-row cols-completed row-completed"><span class="check-name">✓ Lo Show Dei Record Ep 10</span><span class="col-platform">Reel</span><span class="col-editor">Ajay Baby</span></div>
+      <div class="table-row cols-completed row-completed"><span class="check-name">✓ Fastest time to crush 10 eggs with elbows</span><span class="col-platform">Multi-Platform</span><span class="col-editor">Abhimanieu Saji</span></div>
+      <div class="table-row cols-completed row-completed"><span class="check-name">✓ Lowest limbo skating over 10m</span><span class="col-platform">Multi-Platform</span><span class="col-editor">Abhimanieu Saji</span></div>
+    </div>
+  </div>
+
+  <!-- TAB 4: FLAGS -->
+  <div id="tab-4" class="tab-panel">
+    <div class="flags-list">
+      <div class="flag-item" style="background:#FFF5F5;border-color:#FECACA">
+        <div class="flag-dot" style="background:#E24B4A"></div>
+        <div><div class="flag-title">Football Records — Snapchat: 27 days in Greg Reviewing.</div><div class="flag-body">This is the oldest outstanding review item. No reason it should still be with you. Approve or kill it today.</div></div>
+      </div>
+      <div class="flag-item" style="background:#FFF5F5;border-color:#FECACA">
+        <div class="flag-dot" style="background:#E24B4A"></div>
+        <div><div class="flag-title">Fails Comp YT Shorts (×2) still waiting on you.</div><div class="flag-body">These have been in Greg Reviewing since 8 May. Three weeks. Clear them.</div></div>
+      </div>
+      <div class="flag-item" style="background:#FFF5F5;border-color:#FECACA">
+        <div class="flag-dot" style="background:#E24B4A"></div>
+        <div><div class="flag-title">LEGO Star Wars — one subitem (no-handed back flips pogo) has no final link.</div><div class="flag-body">Four out of five subitems are done. This one is stalled — Roopali has it listed as Greg Reviewing but there's no link yet. Chase it.</div></div>
+      </div>
+      <div class="flag-item" style="background:#FFFBEB;border-color:#FDE68A">
+        <div class="flag-dot" style="background:#F59E0B"></div>
+        <div><div class="flag-title">4 new Lo Show episodes landed today with no editor assigned.</div><div class="flag-body">Eps 5–8 are sitting as Footage Sent with no owner. Assign them before end of day or they'll slip.</div></div>
+      </div>
+      <div class="flag-item" style="background:#FFFBEB;border-color:#FDE68A">
+        <div class="flag-dot" style="background:#F59E0B"></div>
+        <div><div class="flag-title">Gaming Comp due 29 May — 2 days.</div><div class="flag-body">Still in Editing with Roopali. Worth a check-in today to confirm it's on track.</div></div>
+      </div>
+      <div class="flag-item" style="background:#F0FDF4;border-color:#BBF7D0">
+        <div class="flag-dot" style="background:#22C55E"></div>
+        <div><div class="flag-title">Roopali has cleared 9 tasks to Final Link Added since the last update.</div><div class="flag-body">Significant output. She's now lighter on active work — good time to load the new footage sent tasks if needed.</div></div>
+      </div>
+      <div class="flag-item" style="background:#F0FDF4;border-color:#BBF7D0">
+        <div class="flag-dot" style="background:#22C55E"></div>
+        <div><div class="flag-title">Ajay and Abhimanieu both completed 4 tasks each. Strong throughput today.</div><div class="flag-body">Lo Show Ep 10, Smallest/Shortest/Thinnest, egg crush, limbo — all wrapped. Pipeline is moving.</div></div>
+      </div>
+      <div class="flag-note"><strong style="color:#555">Still missing:</strong> no timestamp column for footage-sent → editing start. Add a date column to subitems and this dashboard can calculate per-editor response times.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const STATUS_CFG = {
+  "Sourcing":         { bg: "#F1EFE8", color: "#5A5A55" },
+  "Footage Sent":     { bg: "#EEEDFE", color: "#3C3489" },
+  "Editing":          { bg: "#FFF3E0", color: "#7C4A00" },
+  "Greg Reviewing":   { bg: "#E6F1FB", color: "#0C447C" },
+  "Martin Reviewing": { bg: "#FBEAF0", color: "#72243E" },
+  "Sign Off":         { bg: "#D9F9E8", color: "#065F46" },
+  "Final Link Added": { bg: "#EAF3DE", color: "#166534" },
+  "ON HOLD":          { bg: "#FCEBEB", color: "#791F1F" },
+  "with GWR":         { bg: "#E0EAF8", color: "#225091" },
+  "Published":        { bg: "#F0FDF4", color: "#14532D" },
+};
+
+const PIPELINE = [
+  { name: "Puzzle Cube Comp", platform: "Multi-Platform", editor: "Ajay Baby", status: "Footage Sent", due: "1 Jun", priority: "high", isNew: true, url: "https://bravebisonplc.monday.com/boards/2090332801/pulses/2944928492" },
+  { name: "Longest duration holding Hercules Pillars (female)", platform: "Multi-Platform", editor: "Abhimanieu Saji", status: "Footage Sent", due: "28 May", priority: "high", isNew: true, url: "https://bravebisonplc.monday.com/boards/2090332801/pulses/2945476120" },
+  { name: "Mr Cherry Comp", platform: "Multi-Platform", editor: "Ajay Baby", status: "Footage Sent", due: null, priority: "normal", isNew: true, url: "https://bravebisonplc.monday.com/boards/2090332801/pulses/2945598475" },
+  { name: "Lo Show Dei Record Ep 5–8", platform: "Reel", editor: "Unassigned", status: "Footage Sent", due: null, priority: "normal", isNew: true, url: "https://bravebisonplc.monday.com/boards/2090332801/pulses/2935309635" },
+  { name: "Gaming Comp", platform: "Multi-Platform", editor: "Roopali Shukla", status: "Editing", due: "29 May", priority: "high", isNew: false, url: "https://bravebisonplc.monday.com/boards/2090332801/pulses/2840476039" },
+  { name: "Most Spectacular Drone Shows Comp", platform: "Multi-Platform", editor: "Bo Gwak", status: "Editing", due: null, priority: "normal", isNew: false, url: "https://bravebisonplc.monday.com/boards/2090332801/pulses/2910623402" },
+  { name: "Farthest backheel kick of a basketball into basket", platform: "Multi-Platform", editor: "Roopali Shukla", status: "Editing", due: "27 May", priority: "high", isNew: true, url: "https://bravebisonplc.monday.com/boards/2090332801/pulses/2944156694" },
+  { name: "Longest sock slide", platform: "Multi-Platform", editor: "Ajay Baby", status: "Editing", due: "27 May", priority: "normal", isNew: true, url: "https://bravebisonplc.monday.com/boards/2090332801/pulses/2944162076" },
+  { name: "Largest LEGO Star Wars Collection", platform: "Multi-Platform", editor: "Roopali Shukla", status: "Greg Reviewing", due: "15 May ⚑ overdue", priority: "high", isNew: false, url: "https://bravebisonplc.monday.com/boards/2090332801/pulses/2893011859" },
+  { name: "Football Records — Snapchat", platform: "Multi-Platform", editor: "Hannah Barness", status: "Greg Reviewing", due: "30 Apr ⚑ overdue", priority: "high", isNew: false, url: "https://bravebisonplc.monday.com/boards/2090332801/pulses/2828248958" },
+  { name: "Fails Comp — YT Short 9x16 (×2)", platform: "Multi-Platform", editor: "Roopali Shukla", status: "Greg Reviewing", due: "8 May ⚑ overdue", priority: "high", isNew: false, url: "https://bravebisonplc.monday.com/boards/2090332801/pulses/2882469351" },
+  { name: "Pogo Stick — no-handed back flips", platform: "Multi-Platform", editor: "Roopali Shukla", status: "Greg Reviewing", due: null, priority: "normal", isNew: false, url: "https://bravebisonplc.monday.com/boards/2106955333/pulses/2918608797" },
+  { name: "Longest underwater walk (male)", platform: "Multi-Platform", editor: "Abhimanieu Saji", status: "ON HOLD", due: null, priority: "normal", isNew: false, url: "https://bravebisonplc.monday.com/boards/2090332801/pulses/2898415874" },
+];
+
+function makePill(status) {
+  const cfg = STATUS_CFG[status] || { bg: "#F1F1F1", color: "#555" };
+  return `<span class="pill" style="background:${cfg.bg};color:${cfg.color}">${status}</span>`;
+}
+
+function renderPipeline() {
+  const stage = document.getElementById('stage-filter').value;
+  const editor = document.getElementById('editor-filter').value;
+  const filtered = PIPELINE.filter(t =>
+    (stage === 'all' || t.status === stage) &&
+    (editor === 'all' || t.editor === editor)
+  );
+  const body = document.getElementById('pipeline-body');
+  if (filtered.length === 0) {
+    body.innerHTML = '<div class="empty-state">No tasks match this filter.</div>';
+    return;
+  }
+  body.innerHTML = filtered.map(t => {
+    const rowClass = t.isNew ? 'row-new' : t.priority === 'high' ? 'row-high' : '';
+    const newBadge = t.isNew ? '<span class="new-badge">NEW</span>' : '';
+    const dueSpan = t.due ? `<span class="task-due ${t.priority === 'high' ? 'due-high' : 'due-normal'}">⚑ ${t.due}</span>` : '';
+    const editorClass = t.editor === 'Unassigned' ? 'col-editor-unassigned' : 'col-editor';
+    return `<div class="table-row cols-pipeline ${rowClass}">
+      <div>${newBadge}<a class="task-name" href="${t.url}" target="_blank">${t.name}</a>${dueSpan}</div>
+      <span class="col-platform">${t.platform}</span>
+      <span class="${editorClass}">${t.editor}</span>
+      <span>${makePill(t.status)}</span>
+    </div>`;
+  }).join('');
+}
+
+function filterPipeline() { renderPipeline(); }
+
+function resetFilters() {
+  document.getElementById('stage-filter').value = 'all';
+  document.getElementById('editor-filter').value = 'all';
+  renderPipeline();
+}
+
+function switchTab(index, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + index).classList.add('active');
+}
+
+renderPipeline();
+</script>
+</body>
+</html>
